@@ -19,6 +19,7 @@ namespace Bil372_Homework.Data
         public IDbSet<Submission> Submissions { get; set; }
         public IDbSet<Conference> Conferences { get; set; }
         public IDbSet<ConferenceRoles> ConferenceRoles { get; set; }
-
+        public IDbSet<ConferenceTag> ConferenceTags { get; set; }
+            
     }
 }

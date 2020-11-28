@@ -108,6 +108,7 @@
     </Compile>
     <Compile Include="Models\Conference.cs" />
     <Compile Include="Models\ConferenceRoles.cs" />
+    <Compile Include="Models\ConferenceTag.cs" />
     <Compile Include="Models\Submission.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserInfo.cs" />
