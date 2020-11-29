@@ -1,0 +1,45 @@
+﻿
+@{
+	ViewBag.Title = "Conference List";
+}
+
+<h2>Conference CRUD</h2>
+
+<table id="conferenceTable" class="display">
+	<thead>
+		<tr>
+			<th>ConfID</th>
+			<th>Name</th>
+			<th>ShortName</th>
+			<th>Submission Date</th>
+		</tr>
+	</thead>
+</table>
+
+<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+@section scripts{
+	<script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			$("#conferenceTable").DataTable({
+				"ajax": {
+					"url": "/Conference/GetData",
+					"type": "GET",
+					"datatype": "json"
+				},
+				"columns": [
+					{ "data": "ConfID"},
+					{ "data": "Name"},
+					{ "data": "ShortName"},
+					{ "data": "Submission Date" }
+				]
+
+			});
+
+		});
+	</script>
+}

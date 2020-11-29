@@ -40,6 +40,39 @@ namespace Bil372_Homework.Controllers
             return View();
         }
 
+        public ActionResult Info()
+        {
+            connectionString();
+            con.Open();
+            com.Connection = con;
+            List<UserInfo> model = new List<UserInfo>();
+            com.CommandText = "SELECT * FROM [dbo].[UserInfoes] WHERE AuthenticationID = (SELECT AuthenticationID FROM [dbo].[Users] Where UserName ='" + LoggedUser.LoggedUserName + "' and Password ='" + LoggedUser.LoggedPassword + "')";
+            dr = com.ExecuteReader();
+            if (dr.Read())
+            {
+                var UserInf = new UserInfo();
+                UserInf.AuthenticationID = (int)dr["AuthenticationID"];
+                UserInf.Title = dr["Title"].ToString();
+                UserInf.Name = dr["Name"].ToString();
+                UserInf.Affilation = dr["Affilation"].ToString();
+                UserInf.primaryEmail = dr["primaryEmail"].ToString();
+                UserInf.secondaryEmail = dr["secondaryEmail"].ToString();
+                UserInf.password = dr["password"].ToString();
+                UserInf.Phone = dr["Phone"].ToString();
+                UserInf.fax = dr["fax"].ToString();
+                UserInf.URL = dr["URL"].ToString();
+                UserInf.Address = dr["Address"].ToString();
+                UserInf.City = dr["City"].ToString();
+                UserInf.Country = dr["Country"].ToString();
+                UserInf.Record = dr["Record"].ToString();
+                UserInf.CreationDate = (DateTime)dr["CreationDate"];
+                model.Add(UserInf);
+
+            }
+            con.Close();
+            return View(model);
+        }
+
         void connectionString()
         {
             con.ConnectionString = "Server=tcp:databaseadmin.database.windows.net,1433;Initial Catalog=Bil372HW;Persist Security Info=False;User ID=databaseadmin;Password=admindatabase_9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
@@ -102,20 +135,21 @@ namespace Bil372_Homework.Controllers
             com.Connection = con;
             com.CommandText = "INSERT INTO [dbo].[Users] VALUES( '" + user.UserName + "', '" + user.Password + "')";
             com.ExecuteNonQuery();
-            com.CommandText = "SELECT * FROM [dbo].[UserInfoes] WHERE AuthenticationID = (SELECT AuthenticationID FROM [dbo].[Users] Where UserName ='" + user.UserName + "' and Password ='" + user.Password + "')";
+            com.CommandText = "SELECT AuthenticationID FROM [dbo].[Users] Where UserName ='" + user.UserName + "' and Password ='" + user.Password + "'";
             dr = com.ExecuteReader();
             int authenticationId = 0;
             while (dr.Read())
             {
                 authenticationId = (int)dr["AuthenticationID"]; 
             }
-            com.CommandText = "INSERT INTO [dbo].[UserInfoes] VALUES ('"+ authenticationId +"','','','','',''," + user.Password + " , '','','','','','','','')";
+            dr.Close();
+            com.CommandText = "INSERT INTO [dbo].[UserInfoes] VALUES ('"+ authenticationId +"','','','','','','" + user.Password + "' , '','','','','','','','')";
             com.ExecuteNonQuery();
             con.Close();
             return View("Login");
         }
         [HttpGet,HttpPost]
-        public ActionResult Info()
+        public ActionResult IInfo()
         {
             connectionString();
             con.Open();
@@ -189,7 +223,33 @@ namespace Bil372_Homework.Controllers
             }
             con.Close();
             return View("Info",model);
+        }
 
+        public ActionResult UserConference()
+        {
+            return View();
+        }
+        public ActionResult GetData()
+        {
+            using (AppDbContext db = new AppDbContext("Server=tcp:databaseadmin.database.windows.net,1433;Initial Catalog=Bil372HW;Persist Security Info=False;User ID=databaseadmin;Password=admindatabase_9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+            {
+                List<Conference> empList = db.Conferences.ToList<Conference>();
+                return Json(new { data = empList }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult AddOrEdit(int id = 0)
+        {
+            if (id == 0)
+                return View(new Conference());
+            else
+            {
+                using (AppDbContext db = new AppDbContext("Server = tcp:databaseadmin.database.windows.net,1433; Initial Catalog = Bil372HW; Persist Security Info = False; User ID = databaseadmin; Password = admindatabase_9; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30; "))
+                {
+                    return View(db.Conferences.Where(x => x.CreatorUser == LoggedUser.LoggedId).FirstOrDefault<Conference>());
+                }
+            }
         }
     }
 }
