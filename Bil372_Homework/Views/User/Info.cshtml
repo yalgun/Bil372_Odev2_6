@@ -1,0 +1,134 @@
+﻿@model IEnumerable<Bil372_Homework.Models.UserInfo>
+@{
+	Layout = "~/Views/_LayoutPage1.cshtml";
+}
+
+<!DOCTYPE html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+			background-color: black;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		/* Add padding to containers */
+		.container {
+			padding: 16px;
+			background-color: white;
+		}
+
+		/* Full-width input fields */
+		input[type=text], input[type=password] {
+			width: 100%;
+			padding: 15px;
+			margin: 5px 0 22px 0;
+			display: inline-block;
+			border: none;
+			background: #f1f1f1;
+		}
+
+			input[type=text]:focus, input[type=password]:focus {
+				background-color: #ddd;
+				outline: none;
+			}
+
+		/* Overwrite default styles of hr */
+		hr {
+			border: 1px solid #f1f1f1;
+			margin-bottom: 25px;
+		}
+
+		/* Set a style for the submit button */
+		.registerbtn {
+			background-color: #4CAF50;
+			color: white;
+			padding: 16px 20px;
+			margin: 8px 0;
+			border: none;
+			cursor: pointer;
+			width: 100%;
+			opacity: 0.9;
+		}
+
+			.registerbtn:hover {
+				opacity: 1;
+			}
+
+		/* Add a blue text color to links */
+		a {
+			color: dodgerblue;
+		}
+
+		/* Set a grey background color and center the text of the "sign in" section */
+		.signin {
+			background-color: #f1f1f1;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+
+	<form action="UpdateUser" method="POST">
+		<div class="container">
+
+			@foreach (var item in Model)
+			{
+				<h1>User Info</h1>
+				<p>You can alter your user info</p>
+				<hr>
+
+				<label for="AuthenticationID"><b>AuthenticationID</b></label>
+				<input type="text" name="AuthenticationID" id="AuthenticationID" value=@item.AuthenticationID readonly>
+
+				<label for="Title"><b>Title</b></label>
+				<input type="text" name="Title" id="Title" value=@item.Title>
+
+				<label for="Name"><b>Name</b></label>
+				<input type="text" name="Name" id="Name" value=@item.Name>
+
+				<label for="Password"><b>Password</b></label>
+				<input type="text" name="Password" id="Password" value=@item.password>
+
+				<label for="Affilation"><b>Affilation</b></label>
+				<input type="text" name="Affilation" id="Affilation" value=@item.Affilation>
+
+				<label for="primaryEmail"><b>Primary E-mail</b></label>
+				<input type="text" name="primaryEmail" id="primaryEmail" value=@item.primaryEmail>
+
+				<label for="secondaryEmail"><b>Secondary E-mail</b></label>
+				<input type="text" name="secondaryEmail" id="secondaryEmail" value=@item.secondaryEmail>
+
+				<label for="Phone"><b>Phone</b></label>
+				<input type="text" name="Phone" id="Phone" value=@item.Phone>
+
+				<label for="Fax"><b>Fax</b></label>
+				<input type="text" name="fax" id="Fax" value=@item.fax>
+
+				<label for="URL"><b>URL</b></label>
+				<input type="text" name="URL" id="URL" value=@item.URL>
+
+				<label for="Address"><b>Address</b></label>
+				<input type="text" name="Address" id="Address" value=@item.Address>
+
+				<label for="City"><b>City</b></label>
+				<input type="text" name="City" id="City" value=@item.City>
+
+				<label for="Country"><b>Country</b></label>
+				<input type="text" name="Country" id="Country" value=@item.Country>
+
+				<label for="Record"><b>Record</b></label>
+				<input type="text" name="Record" id="Record" value=@item.Record>
+
+				<hr>
+			}
+			<button type="submit" class="registerbtn">Save</button>
+		</div>
+	</form>
+
+</body>
