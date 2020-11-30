@@ -66,68 +66,60 @@ namespace _372_odev2
             };
             collection.InsertOne(document);
 
-            //submissions.insert( { item: "card", qty: 15 } );
-            //addSubmission();
-            /*
-            submissions.InsertOne(new BsonDocument
-            {
-                    {"prev submission id","Yunus"},
-                    {"submission id","Kaygun"},
-                    {"title",25},
-                    {"abstract", 123456},
-
-                    {"keywords" : ["ccccc", "ddddddd", "eeeeeeee"]},
-                    {"authors”:[
-                                {"authenticationID": " " ,"name": "Richard Jones", "email": "…………", "affil": "………..", "country": " "},
-                                {"authenticationID": " " ,"name": "Richard Jones", "email": "…………", "affil": "………..", "country": " "},
-                                {"authenticationID": " " ,"name": "Richard Jones", "email": "…………", "affil": "………..", "country": " "},
-                                {"authenticationID": " " ,"name": "Richard Jones", "email": "…………", "affil": "………..", "country": " "},
-                                {"authenticationID": " " ,"name": "Richard Jones", "email": "…………", "affil": "………..", "country": " "},
-                                {"authenticationID": " " ,"name": "Richard Jones", "email": "…………", "affil": "………..", "country": " "}, //Authentication id ever kayıtlı degilse bostur.
-                    ]},
-
-                    {"submitted by" : " "}, //AuthenticationID ,
-
-                    {"corresponding author" : " "}, //AuthenticationID ,
-
-                    {"pdf_path" : " " },
-
-                    {"type": "article"},
-
-                    {"submission date time": "12/02/2020 13:05 GMT+3"},
-
-                    {"status" : " "},//1:original or modified
-
-                    {"active" : " "} //0: no, 1: yes
-
-            });
-            */
-
-
-
         }
-/*
-        void addSubmission(){
-                Console.WriteLine("deneme0");
-                var submissions = db.GetCollection<BsonDocument>("submissions");
-                Console.WriteLine("deneme");
-                submissions.Insert(new BsonDocument
-                    {
-                        {"prev submission id": "card"},
-                        {"submission id": "card"},
-                        {"title": "card"},
-                        {"abstract": "card"},
-                        {"submitted by": "card"},
-                        {"corresponding author": "card"},
-                        {"pdf_path": "card"},
-                        {"type": "card"},
-                        {"submission date time": "card"},
-                        {"status": "card"},
-                        {"active": "card"}     
+
+        void insertSubmission( int prevsubmissionid, int submissionid, String title, String abstract, Object[] authors String submittedby,
+                                    String cauthor,String pdfpath,String type,String submissionDateTime,int status,int active){
+
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            var document = new BsonDocument {
+            
+                {"prev submission id",submissionid}, //ConfID_
+                {"submission id",submissionid},
+                {"title", title},
+                {"abstract", abstract},
+                //{"keywords" , ["ccccc", "ddddddd", "eeeeeeee"]}, //todo
+                {"authors",
+                    new BsonArray {
+                        new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
+                        new BsonDocument { { "authenticationID", "002" },{ "name", "James Jones" },{ "email", "jjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
+                        new BsonDocument { { "authenticationID", "003" },{ "name", "Richard Joe" },{ "email", "rj2ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
+                        new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } }
                     }
-                );
+                },
+                {"submitted by" , submittedby}, //AuthenticationID ,
+                {"corresponding author" , cauthor}, //AuthenticationID ,
+                {"pdf_path" , pdfpath },
+                {"type" , type},
+                {"submission date time" , submissionDateTime},  // "12/02/2020 13:05 GMT+3"
+                {"status" , status},//1:original or modified
+                {"active" , active} //0: no, 1: yes
+            };
+            collection.InsertOne(document);
         }
-*/
+
+        void editSubmission(int submissionid, QueryDocument querydocument) {
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            
+            var liste = collection.FindAll();
+            
+            var query = new QueryDocument {{ "submission id",submissionid}};
+            
+            var update = new UpdateDocument{querydocument};//{ "$set", new BsonDocument("type", "Sarıkaya") } 
+            
+            collection.Update(query, update);
+        }
+
+        static void removeSubmission(int submissionid){
+        
+            var collection = db.GetCollection<BsonDocument>("submissions");
+    
+            var query = new QueryDocument { { "submission id",submissionid} };
+            
+            ogrenciler.Remove(query);
+        }
             String insertPrevSubmissionId(String var){
                 prev_submission_id= "{"+ " \"prev submission id\" : \" "+var+"\"}";
                 return prev_submission_id;

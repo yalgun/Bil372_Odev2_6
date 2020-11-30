@@ -1,45 +1,33 @@
-﻿
+﻿@model System.Data.DataTable
 @{
-	ViewBag.Title = "Conference List";
+    ViewBag.Title = "Index";
 }
 
-<h2>Conference CRUD</h2>
+	<head>
 
-<table id="conferenceTable" class="display">
-	<thead>
+		<script src="~/Scripts/bootstrap.min.js"></script>
+		<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+	</head>
+
+	<a href="@Url.Action("Create","Conference")">Add New Conference</a>
+
+	<table class=" table table-bordered table-striped table-hover" >
 		<tr>
-			<th>ConfID</th>
+			<th>ID</th>
 			<th>Name</th>
-			<th>ShortName</th>
-			<th>Submission Date</th>
+			<th>Short Name</th>
+			<th>Start Date</th>
+			<th>End Date</th>
 		</tr>
-	</thead>
-</table>
-
-<link href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.bootstrap.min.css" rel="stylesheet" />
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-
-@section scripts{
-	<script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-
-	<script>
-		$(document).ready(function () {
-			$("#conferenceTable").DataTable({
-				"ajax": {
-					"url": "/Conference/GetData",
-					"type": "GET",
-					"datatype": "json"
-				},
-				"columns": [
-					{ "data": "ConfID"},
-					{ "data": "Name"},
-					{ "data": "ShortName"},
-					{ "data": "Submission Date" }
-				]
-
-			});
-
-		});
-	</script>
-}
+		@for (int i=0; i< Model.Rows.Count; i++)
+		{ 
+			<tr>
+				<td> @Model.Rows[i][0]</td>
+				<td> @Model.Rows[i][2]</td>
+				<td> @Model.Rows[i][3]</td>
+				<td> @Model.Rows[i][4]</td>
+				<td> @Model.Rows[i][5]</td>
+			</tr>
+		}
+	</table>
+<a href ="@Url.Action("Create")" 
