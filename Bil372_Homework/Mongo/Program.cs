@@ -99,6 +99,18 @@ namespace _372_odev2
             collection.InsertOne(document);
         }
 
+        void editSubmission(int submissionid, QueryDocument querydocument) {
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            
+            var liste = collection.FindAll();
+            
+            var query = new QueryDocument {{ "submission id",submissionid}};
+            
+            var update = new UpdateDocument{querydocument};//{ "$set", new BsonDocument("type", "Sarıkaya") } 
+            
+            collection.Update(query, update);
+        }
             String insertPrevSubmissionId(String var){
                 prev_submission_id= "{"+ " \"prev submission id\" : \" "+var+"\"}";
                 return prev_submission_id;
