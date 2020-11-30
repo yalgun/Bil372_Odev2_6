@@ -7,47 +7,47 @@
 
 <!DOCTYPE html>
 <html>
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <body>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body>
 
-        <div class="w3-container">
-            <h2>My Conference List</h2>
-        
+    <div class="w3-container">
+        <h2>My Conference List</h2>
+        <p></p>
 
-            <table class="w3-table w3-striped">
+        <table class="w3-table w3-striped w3-border">
+            <tr>
+                <th>ConferenceID</th>
+                <th>CreationDateTime</th>
+                <th>Name</th>
+                <th>ShortName</th>
+                <th>Year</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>SubmisionDeadline</th>
+                <th>CreatorUser</th>
+                <th>WebSite</th>
+            </tr>
+            @foreach (var x in Model)
+            {
                 <tr>
-                    <th>ConferenceID</th>
-                    <th>CreationDateTime</th>
-                    <th>Name</th>
-                    <th>ShortName</th>
-                    <th>Year</th>
-                    <th>StartDate</th>
-                    <th>EndDate</th>
-                    <th>SubmissionDeadline</th>
-                    <th>CreatorUser</th>
-                    <th>WebSite</th>
+                    <td>@x.ConfID</td>
+                    <td>@x.CreationDateTime</td>
+                    <td>@x.Name</td>
+                    <td>@x.ShortName</td>
+                    <td>@x.Year</td>
+                    <td>@x.StartDate</td>
+                    <td>@x.EndDate</td>
+                    <td>@x.SubmisionDeadline</td>
+                    <td>@x.CreatorUser</td>
+                    <td>@x.WebSite</td>
                 </tr>
-                @foreach (var x in Model)
-                {
-                    <tr>
-                        <td>@x.ConfID</td>
-                        <td>@x.CreationDateTime</td>
-                        <td>@x.Name</td>
-                        <td>@x.ShortName</td>
-                        <td > @x.Year</td>
-                        <td > @x.StartDate</td>
-                        <td > @x.EndDate</td>
-                        <td>@x.SubmisionDeadline</td>
-                        <td>@x.CreatorUser</td>
-                        <td>@x.WebSite</td>
-                    </tr>
-           
-                }
 
-            </table>
-        </div>
+            }
 
-    </body>
+        </table>
+    </div>
+
+</body>
 </html>
