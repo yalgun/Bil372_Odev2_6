@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -29,6 +29,7 @@ namespace _372_odev2
                     {"submission id","Kaygun"},
                     {"title",25},
                     {"abstract", 123456},
+
                     {"keywords" : ["ccccc", "ddddddd", "eeeeeeee"]},
                     {"authors”:[
                                 {"authenticationID": " " ,"name": "Richard Jones", "email": "…………", "affil": "………..", "country": " "},
@@ -55,28 +56,83 @@ namespace _372_odev2
 
             });
             */
-            int prev_submission_id=0;
-            int submission_id=0;
-            String title="";
-            String abstractval="";
+            String prev_submission_id   ="";
+            String submission_id        ="";
+            String title                ="";
+            String abstractval          ="";
+            String submitted_by         ="";
+            String corresponding_author ="";
+            String pdf_path             ="";
+            String type                 ="";
+            String submission_date_time ="";
+
+            String status               ="";
+            String active               ="";
+
             String[] keywords=null;
             String[] authors=null;
-            String insertPrevSubmissionId(int var){
-                prev_submission_id=var;
-                return ""+prev_submission_id;
+
+            void addSubmission(){
+                
             }
-            String insertSubmissionId(int var){
-                submission_id=var;
-                return ""+submission_id;
+
+            String insertPrevSubmissionId(String var){
+                prev_submission_id= "{"+ " \"prev submission id\" : \" "+var+"\"}";
+                return prev_submission_id;
             }
-            String insertTitle(String var){
-                title =var;
+
+            String insertSubmissionId(String var){
+                submission_id= "{"+ " \"submission id\" : \" "+var+"\"}";
+                return submission_id;
+            }
+
+            String insertTitle(int var){
+                title ="{"+ " \"title\" : \" "+var+"\"}";
                 return title;
             }
-            String insertAbstract(String var){
-                abstractval=var;
+
+            String insertAbstract(int var){
+                abstractval = "{"+ " \"abstract\" : \" "+var+"\"}";
                 return abstractval;
             }
+
+            String insertSubmittedBy(int var){ //authentication id
+                submitted_by = "{"+ " \"submitted by\" : \" "+var+"\"}";
+                return submitted_by;
+            }
+
+            String insertCorrespondingAuthor(String var){ //authentication id
+                corresponding_author = "{"+ " \"corresponding author\" : \" "+var+"\"}";
+                return corresponding_author;
+            }
+
+            String insertPdfPath(String var){
+                pdf_path= "{"+ " \"pdf_path\" : \" "+var+"\"}";
+                return pdf_path;
+            }
+
+            String insertType(String var){
+                type = "{"+ " \"type\" : \" "+var+"\"}";
+                return type;
+            } 
+
+            String insertSubmissionDateTime(String date){ //todo for date
+                submission_date_time = "{"+ " \"submission date time\" : \" "+date+"\"}";
+                return submission_date_time;
+            }  
+
+            String insertStatus(String var){ //1:original or modified
+                status = "{"+ " \"status\" : \" "+var+"\"}";
+                return status;
+            }
+            String insertActive(String var){ //0: no, 1: yes
+                active = "{"+ " \"active\" : \" "+var+"\"}";
+                return active;
+            }
+
+
+
+/*
             String[] insertAuthors(String[] var){
                 authors=var;
                 return authors;
@@ -85,36 +141,7 @@ namespace _372_odev2
                 keywords=var;
                 return keywords;
             }
-            /*
-            String insertSubmittedBy(){
-
-                return "";
-            }
-            String insertCorrespondingAuthor(){
-
-                return "";
-            }
-            String insertPdfPath(){
-
-                return "";
-            }
-            String insertType(){
-
-                return "";
-            }     
-            String insertSubmissionDateTime(){
-
-                return "";
-            }       
-            String insertStatus(){
-
-                return "";
-            }
-            String insertActive(){
-
-                return "";
-            }
-            */
+*/
         }
 
     }
