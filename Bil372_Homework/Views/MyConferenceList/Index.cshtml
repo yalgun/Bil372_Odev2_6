@@ -1,18 +1,53 @@
-﻿
+﻿@model IEnumerable<Bil372_Homework.Models.Conference>
+
 @{
+    ViewBag.Title = "Index";
     Layout = "~/Views/_LayoutPage1.cshtml";
 }
 
 <!DOCTYPE html>
-
 <html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>MYConfereenceList</title>
-</head>
-<body>
-    <div>
-        "rabia"
-    </div>
-</body>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <body>
+
+        <div class="w3-container">
+            <h2>My Conference List</h2>
+        
+
+            <table class="w3-table w3-striped">
+                <tr>
+                    <th>ConferenceID</th>
+                    <th>CreationDateTime</th>
+                    <th>Name</th>
+                    <th>ShortName</th>
+                    <th>Year</th>
+                    <th>StartDate</th>
+                    <th>EndDate</th>
+                    <th>SubmissionDeadline</th>
+                    <th>CreatorUser</th>
+                    <th>WebSite</th>
+                </tr>
+                @foreach (var x in Model)
+                {
+                    <tr>
+                        <td>@x.ConfID</td>
+                        <td>@x.CreationDateTime</td>
+                        <td>@x.Name</td>
+                        <td>@x.ShortName</td>
+                        <td > @x.Year</td>
+                        <td > @x.StartDate</td>
+                        <td > @x.EndDate</td>
+                        <td>@x.SubmisionDeadline</td>
+                        <td>@x.CreatorUser</td>
+                        <td>@x.WebSite</td>
+                    </tr>
+           
+                }
+
+            </table>
+        </div>
+
+    </body>
 </html>
