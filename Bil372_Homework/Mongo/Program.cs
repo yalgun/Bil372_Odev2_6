@@ -7,6 +7,23 @@ namespace _372_odev2
 {
     class Program
     {
+    
+        String prev_submission_id   ="";
+        String submission_id        ="";
+        String title                ="";
+        String abstractval          ="";
+        String submitted_by         ="";
+        String corresponding_author ="";
+        String pdf_path             ="";
+        String type                 ="";
+        String submission_date_time ="";
+
+        String status               ="";
+        String active               ="";
+
+        String[] keywords=null;
+        String[] authors=null;
+        
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
@@ -17,11 +34,40 @@ namespace _372_odev2
             );
 
             IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
-            var makale_adi = db.GetCollection<BsonDocument>("makale_adi");
-            var firstDocument = makale_adi.Find(new BsonDocument()).FirstOrDefault();
-            Console.WriteLine(firstDocument.ToString());
+            //var makale_adi = db.GetCollection<BsonDocument>("makale_adi");
+            //var firstDocument = makale_adi.Find(new BsonDocument()).FirstOrDefault();
+            //Console.WriteLine(firstDocument.ToString());
+            var collection = db.GetCollection<BsonDocument>("submissions");
 
-            var submissions = db.GetCollection<BsonDocument>("submissions");
+            Console.WriteLine("sss");
+            //Ekleme işlemi yapılıyor
+            var document = new BsonDocument {
+            
+                {"prev submission id","Yunus"},
+                {"submission id","Kaygun"},
+                {"title",25},
+                {"abstract", 123456},
+                //{"keywords" , ["ccccc", "ddddddd", "eeeeeeee"]}, //todo
+                {"authors",
+                    new BsonArray {
+                        new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
+                        new BsonDocument { { "authenticationID", "002" },{ "name", "James Jones" },{ "email", "jjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
+                        new BsonDocument { { "authenticationID", "003" },{ "name", "Richard Joe" },{ "email", "rj2ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
+                        new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } }
+                    }
+                },
+                {"submitted by" , " "}, //AuthenticationID ,
+                {"corresponding author" , " "}, //AuthenticationID ,
+                {"pdf_path" , " " },
+                {"type" , "article"},
+                {"submission date time" , "12/02/2020 13:05 GMT+3"},
+                {"status" , " "},//1:original or modified
+                {"active" , " "} //0: no, 1: yes
+            };
+            collection.InsertOne(document);
+
+            //submissions.insert( { item: "card", qty: 15 } );
+            //addSubmission();
             /*
             submissions.InsertOne(new BsonDocument
             {
@@ -56,26 +102,32 @@ namespace _372_odev2
 
             });
             */
-            String prev_submission_id   ="";
-            String submission_id        ="";
-            String title                ="";
-            String abstractval          ="";
-            String submitted_by         ="";
-            String corresponding_author ="";
-            String pdf_path             ="";
-            String type                 ="";
-            String submission_date_time ="";
 
-            String status               ="";
-            String active               ="";
 
-            String[] keywords=null;
-            String[] authors=null;
 
-            void addSubmission(){
-                
-            }
-
+        }
+/*
+        void addSubmission(){
+                Console.WriteLine("deneme0");
+                var submissions = db.GetCollection<BsonDocument>("submissions");
+                Console.WriteLine("deneme");
+                submissions.Insert(new BsonDocument
+                    {
+                        {"prev submission id": "card"},
+                        {"submission id": "card"},
+                        {"title": "card"},
+                        {"abstract": "card"},
+                        {"submitted by": "card"},
+                        {"corresponding author": "card"},
+                        {"pdf_path": "card"},
+                        {"type": "card"},
+                        {"submission date time": "card"},
+                        {"status": "card"},
+                        {"active": "card"}     
+                    }
+                );
+        }
+*/
             String insertPrevSubmissionId(String var){
                 prev_submission_id= "{"+ " \"prev submission id\" : \" "+var+"\"}";
                 return prev_submission_id;
@@ -142,7 +194,6 @@ namespace _372_odev2
                 return keywords;
             }
 */
-        }
 
     }
 }
