@@ -253,6 +253,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ConferenceController.cs" />
     <Compile Include="Controllers\LoggedUser.cs" />
+    <Compile Include="Controllers\MyConferenceListController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -290,6 +291,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Conference\Index.cshtml" />
+    <Content Include="Views\MyConferenceList\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
