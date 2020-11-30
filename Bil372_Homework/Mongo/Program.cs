@@ -111,6 +111,15 @@ namespace _372_odev2
             
             collection.Update(query, update);
         }
+
+        static void removeSubmission(int submissionid){
+        
+            var collection = db.GetCollection<BsonDocument>("submissions");
+    
+            var query = new QueryDocument { { "submission id",submissionid} };
+            
+            ogrenciler.Remove(query);
+        }
             String insertPrevSubmissionId(String var){
                 prev_submission_id= "{"+ " \"prev submission id\" : \" "+var+"\"}";
                 return prev_submission_id;
