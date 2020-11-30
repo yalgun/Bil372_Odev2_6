@@ -1,33 +1,39 @@
 ﻿@model System.Data.DataTable
 @{
-    ViewBag.Title = "Index";
+	ViewBag.Title = "Index";
+	Layout = "~/Views/_LayoutPage1.cshtml";
 }
 
-	<head>
+<head>
 
-		<script src="~/Scripts/bootstrap.min.js"></script>
-		<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-	</head>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+	<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
 
-	<a href="@Url.Action("Create","Conference")">Add New Conference</a>
+<a href="@Url.Action("Create","Conference")">Add New Conference</a>
 
-	<table class=" table table-bordered table-striped table-hover" >
+<table class=" table table-bordered table-striped table-hover">
+	<tr>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Short Name</th>
+		<th>Start Date</th>
+		<th>End Date</th>
+		<th></th>
+	</tr>
+	@for (int i = 0; i < Model.Rows.Count; i++)
+	{
 		<tr>
-			<th>ID</th>
-			<th>Name</th>
-			<th>Short Name</th>
-			<th>Start Date</th>
-			<th>End Date</th>
+			<td> @Model.Rows[i][0]</td>
+			<td> @Model.Rows[i][2]</td>
+			<td> @Model.Rows[i][3]</td>
+			<td> @Model.Rows[i][4]</td>
+			<td> @Model.Rows[i][5]</td>
+			<td>
+				<a href="@Url.Action("Edit", "Conference", new { @ConfID = @Model.Rows[i][0]})"> Edit</a>
+				<a href="@Url.Action("Delete", "Conference", new { @ConfID = @Model.Rows[i][0]})"> Delete</a>
+			</td>
 		</tr>
-		@for (int i=0; i< Model.Rows.Count; i++)
-		{ 
-			<tr>
-				<td> @Model.Rows[i][0]</td>
-				<td> @Model.Rows[i][2]</td>
-				<td> @Model.Rows[i][3]</td>
-				<td> @Model.Rows[i][4]</td>
-				<td> @Model.Rows[i][5]</td>
-			</tr>
-		}
-	</table>
-<a href ="@Url.Action("Create")" 
+	}
+</table>
+<a href="@Url.Action("Create")"
