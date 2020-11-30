@@ -21,7 +21,7 @@ namespace Bil372_Homework.Controllers
             con.Open();
             com.Connection = con;
             List<Conference> model = new List<Conference>();
-            com.CommandText = "SELECT * FROM [dbo].[Conferences] WHERE CreatorUser IN(SELECT AuthenticationID FROM [dbo].[ConferenceRoles] Where ConferenceRole =0)";
+            com.CommandText = "SELECT * FROM [dbo].[Conferences] WHERE CreatorUser IN(SELECT AuthenticationID FROM [dbo].[ConferenceRoles] Where AuthenticationID = (SELECT AuthenticationID FROM [dbo].[Users] Where UserName ='" + LoggedUser.LoggedUserName + "' and Password ='" + LoggedUser.LoggedPassword + "') and ConferenceRole = 0 and ConferenceRole = 2 )";
             dr = com.ExecuteReader();
             
            while (dr.Read())
@@ -38,7 +38,7 @@ namespace Bil372_Homework.Controllers
                 ConInf.CreatorUser = (int)dr["CreatorUser"];
                 ConInf.WebSite = dr["WebSite"].ToString();
                 model.Add(ConInf);
-
+                
             }
             con.Close();
             return View(model);
@@ -48,20 +48,5 @@ namespace Bil372_Homework.Controllers
         {
             con.ConnectionString = "Server=tcp:databaseadmin.database.windows.net,1433;Initial Catalog=Bil372HW;Persist Security Info=False;User ID=databaseadmin;Password=admindatabase_9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         }
-        void readDataValues()
-        {
-            connectionString();
-            
-            com.Connection = con;
-            List<Conference> model = new List<Conference>();
-            com.CommandText = "SELECT * FROM [dbo].[Conferences] WHERE CreatorUser = (SELECT AuthenticationID FROM [dbo].[ConferenceRoles] Where ConferenceRole =0)";
-            using (con)
-            {
-                con.Open();
-                dr = com.ExecuteReader();
-            }
-
-        }
-
     }
 }
