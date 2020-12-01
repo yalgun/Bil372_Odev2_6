@@ -78,10 +78,11 @@ namespace _372_odev2
 
 
             List<BsonDocument> parts = new List<BsonDocument>();
+            BsonArray barray = new BsonArray{};
             for(int i = 0 ; i < authorids.Length; i++){
 
                 BsonDocument auth = getSubmission(authorids[i]);
-                parts.Add(auth);
+                barray.Add(auth);
             }
 /*
                         new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
@@ -104,11 +105,7 @@ namespace _372_odev2
                 {"title", title},
                 {"abstract", abstractval},
                 //{"keywords" , ["ccccc", "ddddddd", "eeeeeeee"]}, //todo
-                {"authors",
-                    new BsonArray {
-                        {parts}
-                    }
-                },
+                {"authors", barray },
                 {"submitted by" , submitter}, //AuthenticationID ,
                 {"corresponding author" , cauthor}, //AuthenticationID ,
                 {"pdf_path" ,pdfpath },
