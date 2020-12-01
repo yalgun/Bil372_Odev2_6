@@ -3,7 +3,7 @@ Rabia Yunusoğlu <br />
 Yüksel Karadeniz <br />
 Yavuz Algün <br />
 
-##Kurulum
+## Kurulum
 
 Visual Studio yu bilgisayariniza kurunuz. Asagidaki linki kullanarak kurabilirsiniz.<br />
 Visual Studio : https://www.youtube.com/watch?v=FBo5Cso-ufE <br />
@@ -15,6 +15,6 @@ Kullanıcı:ayşe<br />
 Şifre:ayşe1<br />
 Bu girişler ile veritabanında daha sağlıklı sonuçlar elde edebilirsiniz.
 
-##User Manuel
+## User Manuel
 
 User Manuel dokumanina user-manuel klasorunden ulasabilirsiniz.
