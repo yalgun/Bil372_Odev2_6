@@ -94,14 +94,52 @@
 </head>
 <body>
 
-    <h2>Conference Searcher</h2>
+    <h2>   Conference Searcher</h2>
+    <p>   Arama yapabilirsiniz.</p>
+    <table id="tbl1" class="w3-table w3-striped w3-border">
+        <thead>
+            <tr>
+                <th>ConferenceID</th>
+                <th>CreationDateTime</th>
+                <th>Name</th>
+                <th>ShortName</th>
+                <th>Year</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>SubmisionDeadline</th>
+                <th>CreatorUser</th>
+                <th>WebSite</th>
+            </tr>
+        </thead>
+        @foreach (var x in Model)
+        {
+            <tr>
+                <td>@x.ConfID</td>
+                <td>@x.CreationDateTime</td>
+                <td>@x.Name</td>
+                <td>@x.ShortName</td>
+                <td>@x.Year</td>
+                <td>@x.StartDate</td>
+                <td>@x.EndDate</td>
+                <td>@x.SubmisionDeadline</td>
+                <td>@x.CreatorUser</td>
+                <td>@x.WebSite</td>
+            </tr>
 
-    <p>Arama Yapabilirsiniz:</p>
-    <form class="example" action="/action_page.php">
-        <input type="text" placeholder="Search.." name="search">
-        <button type="submit"><i class="fa fa-search"></i></button>
-    </form>
+        }
 
+    </table>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
 
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+    <script>
+        $('#tbl1').dataTable({});
+    </script>
 </body>
+
 </html>
