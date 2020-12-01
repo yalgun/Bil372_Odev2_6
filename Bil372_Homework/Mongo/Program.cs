@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+using System.Collections.Generic;
+
+
 namespace _372_odev2
 {
     class Program
@@ -72,8 +74,21 @@ namespace _372_odev2
 
         }
 
-        void insertSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval, String pdfpath,String type, String date,int status,int active){
+        void insertSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval,int[] authorids, String pdfpath,String type, String date,int status,int active){
 
+
+            List<BsonDocument> parts = new List<BsonDocument>();
+            for(int i = 0 ; i < authorids.Length; i++){
+
+                BsonDocument auth = getSubmission(authorids[i]);
+                parts.Add(auth);
+            }
+/*
+                        new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
+                        new BsonDocument { { "authenticationID", "002" },{ "name", "James Jones" },{ "email", "jjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
+                        new BsonDocument { { "authenticationID", "003" },{ "name", "Richard Joe" },{ "email", "rj2ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
+                        new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } }
+*/
             MongoClient dbClient = new MongoClient(
                 
                 "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
@@ -91,10 +106,7 @@ namespace _372_odev2
                 //{"keywords" , ["ccccc", "ddddddd", "eeeeeeee"]}, //todo
                 {"authors",
                     new BsonArray {
-                        new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "002" },{ "name", "James Jones" },{ "email", "jjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "003" },{ "name", "Richard Joe" },{ "email", "rj2ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } }
+                        {parts}
                     }
                 },
                 {"submitted by" , submitter}, //AuthenticationID ,
@@ -154,6 +166,22 @@ namespace _372_odev2
            // var list = collection.FindAll();
             Console.WriteLine(collection);
             
+        }
+
+        static BsonDocument getSubmission(int submissionid){
+
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+                        
+            var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+            BsonDocument ans = (BsonDocument)collection.Find(filter); 
+            return ans;      
         }
 
         void changeStatus(int submissionid,int status){
