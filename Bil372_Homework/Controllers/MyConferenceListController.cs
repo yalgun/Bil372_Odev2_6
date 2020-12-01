@@ -21,7 +21,7 @@ namespace Bil372_Homework.Controllers
             con.Open();
             com.Connection = con;
             List<Conference> model = new List<Conference>();
-            com.CommandText = "SELECT * FROM [dbo].[Conferences] WHERE CreatorUser IN(SELECT AuthenticationID FROM [dbo].[ConferenceRoles] Where AuthenticationID = (SELECT AuthenticationID FROM [dbo].[Users] Where UserName ='" + LoggedUser.LoggedUserName + "' and Password ='" + LoggedUser.LoggedPassword + "') and ConferenceRole = 0 and ConferenceRole = 2 )";
+            com.CommandText = "Select b.* From[dbo].[ConferenceRoles] c,[dbo].[Conferences] b Where c.ConfID = b.ConfID and(c.ConferenceRole = 0 or c.ConferenceRole = 2) and b.CreatorUser = " + LoggedUser.LoggedId;
             dr = com.ExecuteReader();
             
            while (dr.Read())
