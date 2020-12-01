@@ -73,7 +73,7 @@ namespace _372_odev2
 
         }
 
-        void insertSubmission(){
+        void insertSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval, String pdfpath,String type, String date,int status,int active){
 
             MongoClient dbClient = new MongoClient(
                 
@@ -85,10 +85,10 @@ namespace _372_odev2
             var collection = db.GetCollection<BsonDocument>("submissions");
             var document = new BsonDocument {
             
-                {"prev submission id",0111}, //ConfID_
-                {"submission id",0111},
-                {"title", "{title}"},
-                {"abstract", "{abstract}"},
+                {"prev submission id",submissionid}, //ConfID_
+                {"submission id",submissionid},
+                {"title", title},
+                {"abstract", abstractval},
                 //{"keywords" , ["ccccc", "ddddddd", "eeeeeeee"]}, //todo
                 {"authors",
                     new BsonArray {
@@ -98,13 +98,13 @@ namespace _372_odev2
                         new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } }
                     }
                 },
-                {"submitted by" , 0111}, //AuthenticationID ,
-                {"corresponding author" , 0111}, //AuthenticationID ,
-                {"pdf_path" , "{pdfpath}" },
-                {"type" , "{type}"},
-                {"submission date time" , "{submissionDateTime}"},  // "12/02/2020 13:05 GMT+3"
-                {"status" , 0},//1:original or modified
-                {"active" , 1} //0: no, 1: yes
+                {"submitted by" , submitter}, //AuthenticationID ,
+                {"corresponding author" , cauthor}, //AuthenticationID ,
+                {"pdf_path" ,pdfpath },
+                {"type" , type},
+                {"submission date time" , date},  // "12/02/2020 13:05 GMT+3"
+                {"status" , status},//1:original or modified
+                {"active" , active} //0: no, 1: yes
             };
             collection.InsertOne(document);
         }
