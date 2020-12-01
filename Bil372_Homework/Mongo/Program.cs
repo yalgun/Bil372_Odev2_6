@@ -39,13 +39,10 @@ namespace _372_odev2
             );
 
             IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
-            //var makale_adi = db.GetCollection<BsonDocument>("makale_adi");
-            //var firstDocument = makale_adi.Find(new BsonDocument()).FirstOrDefault();
-            //Console.WriteLine(firstDocument.ToString());
             var collection = db.GetCollection<BsonDocument>("submissions");
 
-            Console.WriteLine("sss");
-            //Ekleme işlemi yapılıyor
+            /*
+            Console.WriteLine("Ekleme işlemi Yapılıyor");
             var document = new BsonDocument {
             
                 {"prev submission id","Yunus"},
@@ -70,6 +67,8 @@ namespace _372_odev2
                 {"active" , " "} //0: no, 1: yes
             };
             collection.InsertOne(document);
+
+            */
 
         }
 
@@ -155,6 +154,36 @@ namespace _372_odev2
            // var list = collection.FindAll();
             Console.WriteLine(collection);
             
+        }
+
+        void changeStatus(int submissionid,int status){
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+                        
+            var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+            var update = Builders<BsonDocument>.Update.Set("status", status);
+            collection.UpdateOne(filter, update);
+        }
+
+        void changeActive(int submissionid,int active){
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+                        
+            var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+            var update = Builders<BsonDocument>.Update.Set("active", active);
+            collection.UpdateOne(filter, update);
         }
 
             String insertPrevSubmissionId(String var){
