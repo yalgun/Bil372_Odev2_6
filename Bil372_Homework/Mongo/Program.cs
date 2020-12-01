@@ -1,7 +1,12 @@
-using System;
-
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
+//using MongoDB.Driver.Builders<TDocument>;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
  
 namespace _372_odev2
 {
@@ -68,17 +73,22 @@ namespace _372_odev2
 
         }
 
-        void insertSubmission( int prevsubmissionid, int submissionid, String title, String abstract, Object[] authors String submittedby,
-                                    String cauthor,String pdfpath,String type,String submissionDateTime,int status,int active){
+        void insertSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval, String pdfpath,String type, String date,int status,int active){
 
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
 
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
             var collection = db.GetCollection<BsonDocument>("submissions");
             var document = new BsonDocument {
             
                 {"prev submission id",submissionid}, //ConfID_
                 {"submission id",submissionid},
                 {"title", title},
-                {"abstract", abstract},
+                {"abstract", abstractval},
                 //{"keywords" , ["ccccc", "ddddddd", "eeeeeeee"]}, //todo
                 {"authors",
                     new BsonArray {
@@ -88,38 +98,65 @@ namespace _372_odev2
                         new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } }
                     }
                 },
-                {"submitted by" , submittedby}, //AuthenticationID ,
+                {"submitted by" , submitter}, //AuthenticationID ,
                 {"corresponding author" , cauthor}, //AuthenticationID ,
-                {"pdf_path" , pdfpath },
+                {"pdf_path" ,pdfpath },
                 {"type" , type},
-                {"submission date time" , submissionDateTime},  // "12/02/2020 13:05 GMT+3"
+                {"submission date time" , date},  // "12/02/2020 13:05 GMT+3"
                 {"status" , status},//1:original or modified
                 {"active" , active} //0: no, 1: yes
             };
             collection.InsertOne(document);
         }
 
-        void editSubmission(int submissionid, QueryDocument querydocument) {
+        void editSubmission(int submissionid, String colname,String colvalue) {
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
 
             var collection = db.GetCollection<BsonDocument>("submissions");
-            
-            var liste = collection.FindAll();
-            
-            var query = new QueryDocument {{ "submission id",submissionid}};
-            
-            var update = new UpdateDocument{querydocument};//{ "$set", new BsonDocument("type", "Sarıkaya") } 
-            
-            collection.Update(query, update);
+                        
+            var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+            var update = Builders<BsonDocument>.Update.Set("{colname}", colvalue);
+            collection.UpdateOne(filter, update);
+
+
+
         }
 
         static void removeSubmission(int submissionid){
-        
+             MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
             var collection = db.GetCollection<BsonDocument>("submissions");
     
-            var query = new QueryDocument { { "submission id",submissionid} };
             
-            ogrenciler.Remove(query);
+            var Deleteone = collection.DeleteOneAsync(
+                            Builders<BsonDocument>.Filter.Eq("submission id", submissionid));
         }
+
+        static void listCollections(){
+
+             MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            
+           // var list = collection.FindAll();
+            Console.WriteLine(collection);
+            
+        }
+
             String insertPrevSubmissionId(String var){
                 prev_submission_id= "{"+ " \"prev submission id\" : \" "+var+"\"}";
                 return prev_submission_id;
