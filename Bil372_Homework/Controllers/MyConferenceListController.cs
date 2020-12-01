@@ -42,7 +42,7 @@ namespace Bil372_Homework.Controllers
             }
             con.Close();
             return View(model);
-            return View();
+            
         }
         void connectionString()
         {
