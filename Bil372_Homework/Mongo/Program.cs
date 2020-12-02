@@ -50,11 +50,11 @@ namespace _372_odev2
             //p.newSubmission(0000003,00000002,0000004,"newresearch4","ACBBCC",authors, "fake4.pdf","economy", "17/09/2020 12:05 GMT+3",0,0);
             //p.newSubmission(0000004,00000001,0000003,"globalresearch","AAABCC",authors, "fake2.pdf","business", "18/01/2020 03:05 GMT+3",0,0);
             //p.updateSubmission(0000002,00000001,0000002,"newglobalresearch","AAABBCC",authors, "newfake2.pdf","medicine", "14/07/2021 12:45 GMT+3");
-            //p.recoverSubmission(0000003);
             //p.inActiveSubmission(0000003);
+            //p.recoverSubmission(0000003);
             //p.deleteSubmissionPermanently(0000003);
             //p.displayInfo(true);
-            p.viewSubmission(4);
+            //p.viewSubmission(4);
         }
         void displayInfo(bool isadmin){
             
@@ -102,7 +102,7 @@ namespace _372_odev2
             var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
             var update = Builders<BsonDocument>.Update.Set("active", 1); //1=active 0=nonactive
             collection.UpdateOne(filter, update);
-            Console.WriteLine("Sucesfully inactived");
+            Console.WriteLine("Sucesfully actived");
 
         }
 
