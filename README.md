@@ -13,6 +13,7 @@ MongoDB       :https://medium.com/@haktanakda/mongo-db-kurulumu-ayarlar%C4%B1-f3
 ## Calistirma
 
 Visual Studio calistirma butonuna bastığınız anda çalışmaya balayacaktır.Browserda https://localhost:44333/User/Login ne gidiniz.<br />
+sql dump dosyasını sql_scripts dosyası içeresinde bulabilirsiniz.<br />
 -------------------------------o----------------------------------------<br />
 Mongo veritabanına ulaşım için MLab üzerinden free service sistemi kullanılmaktadır.Cluster bağlantısı için "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority" dll ni kullanınız<br />
 
