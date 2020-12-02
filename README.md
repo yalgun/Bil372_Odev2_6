@@ -8,7 +8,8 @@ Yavuz Algün <br />
 Visual Studio yu bilgisayariniza kurunuz. Asagidaki linki kullanarak kurabilirsiniz.<br />
 Visual Studio : https://www.youtube.com/watch?v=FBo5Cso-ufE <br />
 SQLServer     : https://www.youtube.com/watch?v=QsXWszvjMBM <br />
-DotNet        :https://docs.microsoft.com/tr-tr/dotnet/framework/install/
+DotNet        :https://docs.microsoft.com/tr-tr/dotnet/framework/install/ <br />
+MongoDB       :https://medium.com/@haktanakda/mongo-db-kurulumu-ayarlar%C4%B1-f3aff5f6b0a5 <br />
 ## Calistirma
 
 Visual Studio calistirma butonuna bastığınız anda çalışmaya balayacaktır.Browserda https://localhost:44333/User/Login ne gidiniz.<br />
