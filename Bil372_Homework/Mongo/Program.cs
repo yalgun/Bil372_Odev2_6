@@ -54,6 +54,7 @@ namespace _372_odev2
             //p.inActiveSubmission(0000003);
             //p.deleteSubmissionPermanently(0000003);
             //p.displayInfo(true);
+            p.viewSubmission(4);
         }
         void displayInfo(bool isadmin){
             
@@ -235,7 +236,7 @@ namespace _372_odev2
             
         }
 
-        BsonDocument viewSubmission(int submissionid){
+        void viewSubmission(int submissionid){
 
             MongoClient dbClient = new MongoClient(
                 
@@ -247,8 +248,15 @@ namespace _372_odev2
             var collection = db.GetCollection<BsonDocument>("submissions");
                         
             var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
-            BsonDocument ans = (BsonDocument)collection.Find(filter); 
-            return ans;      
+
+            var documents = collection.Find(new BsonDocument()).ToList();
+     
+            foreach(BsonDocument doc in documents)
+            {
+                Console.WriteLine(doc.ToString()+"\n");
+            }  
+            //var ans = collection.Find(filter); 
+            //Console.WriteLine(ans.ToString());
         }
 
         void changeStatus(int submissionid,int status){
