@@ -33,63 +33,130 @@ namespace _372_odev2
         
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Connection creating...");
             MongoClient dbClient = new MongoClient(
                 
                 "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
             
             );
+            Console.WriteLine("Connection created!");
 
             IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
             var collection = db.GetCollection<BsonDocument>("submissions");
-
-            /*
-            Console.WriteLine("Ekleme işlemi Yapılıyor");
-            var document = new BsonDocument {
+            Program p = new Program();
+            int[] authors = new int[5];
+            authors[0]=1233132;
+            authors[1]=123213;
+            //p.newSubmission(0000003,00000002,0000004,"newresearch4","ACBBCC",authors, "fake4.pdf","economy", "17/09/2020 12:05 GMT+3",0,0);
+            //p.newSubmission(0000004,00000001,0000003,"globalresearch","AAABCC",authors, "fake2.pdf","business", "18/01/2020 03:05 GMT+3",0,0);
+            //p.updateSubmission(0000002,00000001,0000002,"newglobalresearch","AAABBCC",authors, "newfake2.pdf","medicine", "14/07/2021 12:45 GMT+3");
+            //p.inActiveSubmission(0000003);
+            //p.recoverSubmission(0000003);
+            //p.deleteSubmissionPermanently(0000003);
+            //p.displayInfo(true);
+            //p.viewSubmission(4);
+        }
+        void displayInfo(bool isadmin){
             
-                {"prev submission id","Yunus"},
-                {"submission id","Kaygun"},
-                {"title",25},
-                {"abstract", 123456},
-                //{"keywords" , ["ccccc", "ddddddd", "eeeeeeee"]}, //todo
-                {"authors",
-                    new BsonArray {
-                        new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "002" },{ "name", "James Jones" },{ "email", "jjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "003" },{ "name", "Richard Joe" },{ "email", "rj2ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } }
-                    }
-                },
-                {"submitted by" , " "}, //AuthenticationID ,
-                {"corresponding author" , " "}, //AuthenticationID ,
-                {"pdf_path" , " " },
-                {"type" , "article"},
-                {"submission date time" , "12/02/2020 13:05 GMT+3"},
-                {"status" , " "},//1:original or modified
-                {"active" , " "} //0: no, 1: yes
-            };
-            collection.InsertOne(document);
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
 
-            */
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            var documents = collection.Find(new BsonDocument()).ToList();
+     
+            foreach(BsonDocument doc in documents)
+            {
+                Console.WriteLine(doc.ToString()+"\n");
+            }       
+        }
+
+        void inActiveSubmission(int submissionid){
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+            var update = Builders<BsonDocument>.Update.Set("active", 0); //1=active 0=nonactive
+            collection.UpdateOne(filter, update);
+            Console.WriteLine("Sucesfully inactived");
 
         }
 
-        void insertSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval,int[] authorids, String pdfpath,String type, String date,int status,int active){
+        void recoverSubmission(int submissionid){
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+            var update = Builders<BsonDocument>.Update.Set("active", 1); //1=active 0=nonactive
+            collection.UpdateOne(filter, update);
+            Console.WriteLine("Sucesfully actived");
+
+        }
+
+        void updateSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval,int[] authorids, String pdfpath,String type, String date){
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+            var update = Builders<BsonDocument>.Update.Set("title", title);
+            var update1 = Builders<BsonDocument>.Update.Set("abstract", abstractval);
+            var update2 = Builders<BsonDocument>.Update.Set("authors", authorids);
+            var update3 = Builders<BsonDocument>.Update.Set("pdf path", pdfpath);
+            var update4 = Builders<BsonDocument>.Update.Set("type", type);
+            var update5 = Builders<BsonDocument>.Update.Set("date", date);
+            var update6 = Builders<BsonDocument>.Update.Set("status", 0); //status 0=modified ; 1=original
+            var update7 = Builders<BsonDocument>.Update.Set("active", 1); //1=active 0=nonactive
+            var update8 = Builders<BsonDocument>.Update.Set("submitted by", submitter);
+
+            collection.UpdateOne(filter, update);
+            collection.UpdateOne(filter, update1);
+            collection.UpdateOne(filter, update2);
+            collection.UpdateOne(filter, update3);
+            collection.UpdateOne(filter, update4);
+            collection.UpdateOne(filter, update5);
+            collection.UpdateOne(filter, update6);
+            collection.UpdateOne(filter, update7);
+            collection.UpdateOne(filter, update8);
+
+            Console.WriteLine("Sucesfully Updated");
+
+
+        }
+        void newSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval,int[] authorids, String pdfpath,String type, String date,int status,int active){
 
 
             List<BsonDocument> parts = new List<BsonDocument>();
             BsonArray barray = new BsonArray{};
             for(int i = 0 ; i < authorids.Length; i++){
 
-                BsonDocument auth = getSubmission(authorids[i]);
-                barray.Add(auth);
+                //BsonDocument auth = getSubmission(authorids[i]);
+                //barray.Add(auth);
             }
-/*
-                        new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "002" },{ "name", "James Jones" },{ "email", "jjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "003" },{ "name", "Richard Joe" },{ "email", "rj2ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } }
-*/
+            Console.WriteLine("new Submission created");
+
+                        barray.Add(new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } });
+                        barray.Add(new BsonDocument { { "authenticationID", "002" },{ "name", "James Jones" },{ "email", "jjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } });
+                        barray.Add(new BsonDocument { { "authenticationID", "003" },{ "name", "Richard Joe" },{ "email", "rj2ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } });
+                        barray.Add(new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } });
+
             MongoClient dbClient = new MongoClient(
                 
                 "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
@@ -135,21 +202,23 @@ namespace _372_odev2
 
         }
 
-        static void removeSubmission(int submissionid){
+        void deleteSubmissionPermanently(int submissionid){
              MongoClient dbClient = new MongoClient(
                 
                 "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
             
             );
             IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+
             var collection = db.GetCollection<BsonDocument>("submissions");
-    
-            
-            var Deleteone = collection.DeleteOneAsync(
-                            Builders<BsonDocument>.Filter.Eq("submission id", submissionid));
+            var deleteFilter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+
+            collection.DeleteOne(deleteFilter);
+            Console.WriteLine("Submission deleted");
+
         }
 
-        static void listCollections(){
+        void listCollections(){
 
              MongoClient dbClient = new MongoClient(
                 
@@ -162,10 +231,12 @@ namespace _372_odev2
             
            // var list = collection.FindAll();
             Console.WriteLine(collection);
+            Console.WriteLine("Listed Collections");
+
             
         }
 
-        static BsonDocument getSubmission(int submissionid){
+        void viewSubmission(int submissionid){
 
             MongoClient dbClient = new MongoClient(
                 
@@ -177,8 +248,15 @@ namespace _372_odev2
             var collection = db.GetCollection<BsonDocument>("submissions");
                         
             var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
-            BsonDocument ans = (BsonDocument)collection.Find(filter); 
-            return ans;      
+
+            var documents = collection.Find(new BsonDocument()).ToList();
+     
+            foreach(BsonDocument doc in documents)
+            {
+                Console.WriteLine(doc.ToString()+"\n");
+            }  
+            //var ans = collection.Find(filter); 
+            //Console.WriteLine(ans.ToString());
         }
 
         void changeStatus(int submissionid,int status){
