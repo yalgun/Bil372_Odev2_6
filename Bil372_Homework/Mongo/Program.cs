@@ -42,38 +42,64 @@ namespace _372_odev2
 
             IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
             var collection = db.GetCollection<BsonDocument>("submissions");
-
-            /*
-            Console.WriteLine("Ekleme işlemi Yapılıyor");
-            var document = new BsonDocument {
+            Program p = new Program();
+            int[] authors = new int[5];
+            authors[0]=1233132;
+            authors[1]=123213;
+            //p.insertSubmission(0000001,00000002,0000001,"newresearch","AABBCC",authors, "fake.pdf","medicine", "12/02/2020 13:05 GMT+3",0,0);
+            p.insertSubmission(0000002,00000001,0000002,"globalresearch","AAABCC",authors, "fake2.pdf","medicine", "12/02/2020 13:05 GMT+3",0,0);
+            p.displayInfo(true);
+        }
+        void displayInfo(bool isadmin){
             
-                {"prev submission id","Yunus"},
-                {"submission id","Kaygun"},
-                {"title",25},
-                {"abstract", 123456},
-                //{"keywords" , ["ccccc", "ddddddd", "eeeeeeee"]}, //todo
-                {"authors",
-                    new BsonArray {
-                        new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "002" },{ "name", "James Jones" },{ "email", "jjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "003" },{ "name", "Richard Joe" },{ "email", "rj2ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } }
-                    }
-                },
-                {"submitted by" , " "}, //AuthenticationID ,
-                {"corresponding author" , " "}, //AuthenticationID ,
-                {"pdf_path" , " " },
-                {"type" , "article"},
-                {"submission date time" , "12/02/2020 13:05 GMT+3"},
-                {"status" , " "},//1:original or modified
-                {"active" , " "} //0: no, 1: yes
-            };
-            collection.InsertOne(document);
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
 
-            */
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            var documents = collection.Find(new BsonDocument()).ToList();
+     
+            foreach(BsonDocument doc in documents)
+            {
+                Console.WriteLine(doc.ToString()+"\n");
+            }       
+        }
+        void updateSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval,int[] authorids, String pdfpath,String type, String date,int status,int active){
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+            var update = Builders<BsonDocument>.Update.Set("title", title);
+            var update1 = Builders<BsonDocument>.Update.Set("abstract", abstractval);
+            var update2 = Builders<BsonDocument>.Update.Set("authors", authorids);
+            var update3 = Builders<BsonDocument>.Update.Set("pdf path", pdfpath);
+            var update4 = Builders<BsonDocument>.Update.Set("type", type);
+            var update5 = Builders<BsonDocument>.Update.Set("date", date);
+            var update6 = Builders<BsonDocument>.Update.Set("status", 0); //status 0=modified ; 1=original
+            var update7 = Builders<BsonDocument>.Update.Set("active", 1); //1=active 0=nonactive
+            var update8 = Builders<BsonDocument>.Update.Set("submitted by", submitter);
+
+            
+            collection.UpdateOne(filter, update);
+            collection.UpdateOne(filter, update1);
+            collection.UpdateOne(filter, update2);
+            collection.UpdateOne(filter, update3);
+            collection.UpdateOne(filter, update4);
+            collection.UpdateOne(filter, update5);
+            collection.UpdateOne(filter, update6);
+            collection.UpdateOne(filter, update7);
+            collection.UpdateOne(filter, update8);
+
 
         }
-
         void insertSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval,int[] authorids, String pdfpath,String type, String date,int status,int active){
 
 
@@ -81,15 +107,16 @@ namespace _372_odev2
             BsonArray barray = new BsonArray{};
             for(int i = 0 ; i < authorids.Length; i++){
 
-                BsonDocument auth = getSubmission(authorids[i]);
-                barray.Add(auth);
+                //BsonDocument auth = getSubmission(authorids[i]);
+                //barray.Add(auth);
             }
-/*
-                        new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "002" },{ "name", "James Jones" },{ "email", "jjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "003" },{ "name", "Richard Joe" },{ "email", "rj2ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } },
-                        new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } }
-*/
+            Console.WriteLine("deneme1");
+
+                        barray.Add(new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } });
+                        barray.Add(new BsonDocument { { "authenticationID", "002" },{ "name", "James Jones" },{ "email", "jjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } });
+                        barray.Add(new BsonDocument { { "authenticationID", "003" },{ "name", "Richard Joe" },{ "email", "rj2ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } });
+                        barray.Add(new BsonDocument { { "authenticationID", "004" },{ "name", "Rich Jones" },{ "email", "rj3ones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } });
+
             MongoClient dbClient = new MongoClient(
                 
                 "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
