@@ -46,9 +46,10 @@ namespace _372_odev2
             int[] authors = new int[5];
             authors[0]=1233132;
             authors[1]=123213;
-            //p.insertSubmission(0000001,00000002,0000001,"newresearch","AABBCC",authors, "fake.pdf","medicine", "12/02/2020 13:05 GMT+3",0,0);
-            p.insertSubmission(0000002,00000001,0000002,"globalresearch","AAABCC",authors, "fake2.pdf","medicine", "12/02/2020 13:05 GMT+3",0,0);
-            p.displayInfo(true);
+            //p.newSubmission(0000001,00000002,0000001,"newresearch","AABBCC",authors, "fake.pdf","medicine", "12/02/2020 13:05 GMT+3",0,0);
+            //p.newSubmission(0000002,00000001,0000002,"globalresearch","AAABCC",authors, "fake2.pdf","medicine", "12/02/2020 13:05 GMT+3",0,0);
+            p.updateSubmission(0000002,00000001,0000002,"newglobalresearch","AAABBCC",authors, "newfake2.pdf","medicine", "14/07/2021 12:45 GMT+3");
+            //p.displayInfo(true);
         }
         void displayInfo(bool isadmin){
             
@@ -67,7 +68,40 @@ namespace _372_odev2
                 Console.WriteLine(doc.ToString()+"\n");
             }       
         }
-        void updateSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval,int[] authorids, String pdfpath,String type, String date,int status,int active){
+
+        void inActiveSubmission(int submissionid){
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+            var update = Builders<BsonDocument>.Update.Set("active", 0); //1=active 0=nonactive
+            collection.UpdateOne(filter, update);
+            Console.WriteLine("Sucesfully inactived");
+
+        }
+
+        void recoverSubmission(int submissionid){
+            MongoClient dbClient = new MongoClient(
+                
+                "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
+            
+            );
+            IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+
+            var collection = db.GetCollection<BsonDocument>("submissions");
+            var filter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+            var update = Builders<BsonDocument>.Update.Set("active", 1); //1=active 0=nonactive
+            collection.UpdateOne(filter, update);
+            Console.WriteLine("Sucesfully inactived");
+
+        }
+
+        void updateSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval,int[] authorids, String pdfpath,String type, String date){
             MongoClient dbClient = new MongoClient(
                 
                 "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
@@ -87,7 +121,6 @@ namespace _372_odev2
             var update7 = Builders<BsonDocument>.Update.Set("active", 1); //1=active 0=nonactive
             var update8 = Builders<BsonDocument>.Update.Set("submitted by", submitter);
 
-            
             collection.UpdateOne(filter, update);
             collection.UpdateOne(filter, update1);
             collection.UpdateOne(filter, update2);
@@ -98,9 +131,11 @@ namespace _372_odev2
             collection.UpdateOne(filter, update7);
             collection.UpdateOne(filter, update8);
 
+            Console.WriteLine("Sucesfully Updated");
+
 
         }
-        void insertSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval,int[] authorids, String pdfpath,String type, String date,int status,int active){
+        void newSubmission(int submissionid,int submitter,int cauthor,String title,String abstractval,int[] authorids, String pdfpath,String type, String date,int status,int active){
 
 
             List<BsonDocument> parts = new List<BsonDocument>();
@@ -162,7 +197,7 @@ namespace _372_odev2
 
         }
 
-        static void removeSubmission(int submissionid){
+        static void deleteSubmissionPermanently(int submissionid){
              MongoClient dbClient = new MongoClient(
                 
                 "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
@@ -192,7 +227,7 @@ namespace _372_odev2
             
         }
 
-        static BsonDocument getSubmission(int submissionid){
+        static BsonDocument viewSubmission(int submissionid){
 
             MongoClient dbClient = new MongoClient(
                 
