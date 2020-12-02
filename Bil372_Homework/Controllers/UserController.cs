@@ -133,7 +133,7 @@ namespace Bil372_Homework.Controllers
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "INSERT INTO [dbo].[Users] VALUES( '" + user.UserName + "', '" + user.Password + "')";
+            com.CommandText = "INSERT INTO [dbo].[Users] VALUES( '" + user.UserName + "', '" + user.Password + "', " + 0 + ")";
             com.ExecuteNonQuery();
             com.CommandText = "SELECT AuthenticationID FROM [dbo].[Users] Where UserName ='" + user.UserName + "' and Password ='" + user.Password + "'";
             dr = com.ExecuteReader();
