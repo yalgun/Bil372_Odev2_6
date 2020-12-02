@@ -14,6 +14,7 @@ namespace Bil372_Homework.Models
         public String UserName { get; set; }
         [StringLength(50)]
         public String Password { get; set; }
+        public int Confirm { get; set; }
     }
 
     public class UserViewModel

@@ -15,7 +15,7 @@ namespace Bil372_Homework.Models
         public int AuthenticationID { get; set; }
         [Key]
         [Column(Order = 1)]
-        public int ConfID { get; set; }
+        public string ConfID { get; set; }
     }
 
     public class ConferenceRolesViewModel

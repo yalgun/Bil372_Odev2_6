@@ -14,21 +14,29 @@
 
 <table class=" table table-bordered table-striped table-hover">
 	<tr>
-		<th>ID</th>
+		<th>ConferenceID</th>
+		<th>CreationDateTime</th>
 		<th>Name</th>
-		<th>Short Name</th>
-		<th>Start Date</th>
-		<th>End Date</th>
+		<th>ShortName</th>
+		<th>Year</th>
+		<th>StartDate</th>
+		<th>EndDate</th>
+		<th>SubmisionDeadline</th>
+		<th>WebSite</th>
 		<th></th>
 	</tr>
 	@for (int i = 0; i < Model.Rows.Count; i++)
 	{
 		<tr>
 			<td> @Model.Rows[i][0]</td>
+			<td> @Model.Rows[i][1]</td>
 			<td> @Model.Rows[i][2]</td>
 			<td> @Model.Rows[i][3]</td>
 			<td> @Model.Rows[i][4]</td>
 			<td> @Model.Rows[i][5]</td>
+			<td> @Model.Rows[i][6]</td>
+			<td> @Model.Rows[i][7]</td>
+			<td> @Model.Rows[i][9]</td>
 			<td>
 				<a href="@Url.Action("Edit", "Conference", new { @ConfID = @Model.Rows[i][0]})"> Edit</a>
 				<a href="@Url.Action("Delete", "Conference", new { @ConfID = @Model.Rows[i][0]})"> Delete</a>
@@ -36,4 +44,4 @@
 		</tr>
 	}
 </table>
-<a href="@Url.Action("Create")"
+<a href="@Url.Action("Create")"></a>

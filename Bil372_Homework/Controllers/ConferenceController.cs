@@ -99,9 +99,13 @@ namespace Bil372_Homework.Controllers
             using(SqlConnection sqlCon = new SqlConnection(ConnectionString))
             {
                 sqlCon.Open();
-                string query = "DELETE FROM [dbo].[Conferences] WHERE ConfID = '" + ConfID + "'";
+                string query = "DELETE FROM [dbo].[ConferenceRoles] WHERE ConfID = ' " + ConfID + "'";
+                SqlCommand sqlCommand1 = new SqlCommand(query, sqlCon);
+                sqlCommand1.ExecuteNonQuery();
+                query = "DELETE FROM [dbo].[Conferences] WHERE ConfID = '" + ConfID + "'";
                 SqlCommand sqlCommand = new SqlCommand(query, sqlCon);
                 sqlCommand.ExecuteNonQuery();
+                
             }
             return RedirectToAction("Index");
         }

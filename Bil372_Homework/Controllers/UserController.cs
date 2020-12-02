@@ -2,6 +2,7 @@
 using Bil372_Homework.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -84,10 +85,16 @@ namespace Bil372_Homework.Controllers
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "SELECT AuthenticationID FROM [dbo].[Users] WHERE UserName ='" + user.UserName + "' and Password ='" + user.Password + "'";
+            com.CommandText = "SELECT AuthenticationID, Confirm FROM [dbo].[Users] WHERE UserName ='" + user.UserName + "' and Password ='" + user.Password + "'";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
+                int Confirm = (int)dr["Confirm"];
+                if(Confirm == 0)
+                {
+                    con.Close();
+                    return View("NotConfirm");
+                }
                 dr.Close();
 
                 List<UserInfo> model = new List<UserInfo>();
@@ -118,12 +125,23 @@ namespace Bil372_Homework.Controllers
                 LoggedUser.LoggedUserName = user.UserName;
                 LoggedUser.LoggedPassword = user.Password;
                 con.Close();
+                if(LoggedUser.LoggedUserName ==  "admin")
+                {
+                    DataTable dataTable = new DataTable();
+                    using (SqlConnection sqlCon = new SqlConnection("Server=tcp:databaseadmin.database.windows.net,1433;Initial Catalog=Bil372HW;Persist Security Info=False;User ID=databaseadmin;Password=admindatabase_9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+                    {
+                        sqlCon.Open();
+                        SqlDataAdapter sqlDA = new SqlDataAdapter("SELECT * FROM [dbo].[Users]", sqlCon);
+                        sqlDA.Fill(dataTable);
+                    }
+                    return View("Admin", dataTable);
+                }
                 return View("Info",model);
             }
             else
             {
                 con.Close();
-                return View("Error");
+                return RedirectToAction("Login");
             }
         }
 
@@ -133,7 +151,7 @@ namespace Bil372_Homework.Controllers
             connectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "INSERT INTO [dbo].[Users] VALUES( '" + user.UserName + "', '" + user.Password + "')";
+            com.CommandText = "INSERT INTO [dbo].[Users] VALUES( '" + user.UserName + "', '" + user.Password + "', " + 0 + ")";
             com.ExecuteNonQuery();
             com.CommandText = "SELECT AuthenticationID FROM [dbo].[Users] Where UserName ='" + user.UserName + "' and Password ='" + user.Password + "'";
             dr = com.ExecuteReader();
@@ -250,6 +268,29 @@ namespace Bil372_Homework.Controllers
                     return View(db.Conferences.Where(x => x.CreatorUser == LoggedUser.LoggedId).FirstOrDefault<Conference>());
                 }
             }
+        }
+        public ActionResult Admin()
+        {
+            DataTable dataTable = new DataTable();
+            using (SqlConnection sqlCon = new SqlConnection("Server=tcp:databaseadmin.database.windows.net,1433;Initial Catalog=Bil372HW;Persist Security Info=False;User ID=databaseadmin;Password=admindatabase_9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+            {
+                sqlCon.Open();
+                SqlDataAdapter sqlDA = new SqlDataAdapter("SELECT * FROM [dbo].[Users]" , sqlCon);
+                sqlDA.Fill(dataTable);
+            }
+            return View(dataTable);
+        }
+
+        public ActionResult Confirm(String AuthenticationID)
+        {
+            using (SqlConnection sqlCon = new SqlConnection("Server=tcp:databaseadmin.database.windows.net,1433;Initial Catalog=Bil372HW;Persist Security Info=False;User ID=databaseadmin;Password=admindatabase_9;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+            {
+                sqlCon.Open();
+                string query = "UPDATE [dbo].[Users] SET Confirm = '" + 1 + "' WHERE AuthenticationID = " + AuthenticationID;
+                SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                sqlCmd.ExecuteNonQuery();
+            }
+            return RedirectToAction("Admin");
         }
     }
 }
