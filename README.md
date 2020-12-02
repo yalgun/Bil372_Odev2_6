@@ -7,6 +7,7 @@ Yavuz Algün <br />
 
 Visual Studio yu bilgisayariniza kurunuz. Asagidaki linki kullanarak kurabilirsiniz.<br />
 Visual Studio : https://www.youtube.com/watch?v=FBo5Cso-ufE <br />
+SQLServer     : https://www.youtube.com/watch?v=QsXWszvjMBM <br />
 DotNet        :https://docs.microsoft.com/tr-tr/dotnet/framework/install/
 ## Calistirma
 
