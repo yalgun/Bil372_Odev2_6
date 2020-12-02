@@ -33,12 +33,13 @@ namespace _372_odev2
         
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Connection creating...");
             MongoClient dbClient = new MongoClient(
                 
                 "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
             
             );
+            Console.WriteLine("Connection created!");
 
             IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
             var collection = db.GetCollection<BsonDocument>("submissions");
@@ -46,9 +47,12 @@ namespace _372_odev2
             int[] authors = new int[5];
             authors[0]=1233132;
             authors[1]=123213;
-            //p.newSubmission(0000001,00000002,0000001,"newresearch","AABBCC",authors, "fake.pdf","medicine", "12/02/2020 13:05 GMT+3",0,0);
-            //p.newSubmission(0000002,00000001,0000002,"globalresearch","AAABCC",authors, "fake2.pdf","medicine", "12/02/2020 13:05 GMT+3",0,0);
-            p.updateSubmission(0000002,00000001,0000002,"newglobalresearch","AAABBCC",authors, "newfake2.pdf","medicine", "14/07/2021 12:45 GMT+3");
+            //p.newSubmission(0000003,00000002,0000004,"newresearch4","ACBBCC",authors, "fake4.pdf","economy", "17/09/2020 12:05 GMT+3",0,0);
+            //p.newSubmission(0000004,00000001,0000003,"globalresearch","AAABCC",authors, "fake2.pdf","business", "18/01/2020 03:05 GMT+3",0,0);
+            //p.updateSubmission(0000002,00000001,0000002,"newglobalresearch","AAABBCC",authors, "newfake2.pdf","medicine", "14/07/2021 12:45 GMT+3");
+            //p.recoverSubmission(0000003);
+            //p.inActiveSubmission(0000003);
+            //p.deleteSubmissionPermanently(0000003);
             //p.displayInfo(true);
         }
         void displayInfo(bool isadmin){
@@ -145,7 +149,7 @@ namespace _372_odev2
                 //BsonDocument auth = getSubmission(authorids[i]);
                 //barray.Add(auth);
             }
-            Console.WriteLine("deneme1");
+            Console.WriteLine("new Submission created");
 
                         barray.Add(new BsonDocument { { "authenticationID", "001" },{ "name", "Richard Jones" },{ "email", "rjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } });
                         barray.Add(new BsonDocument { { "authenticationID", "002" },{ "name", "James Jones" },{ "email", "jjones@gmail.com" },{ "affil", "...." },{ "country", "TURKIYE" } });
@@ -197,21 +201,23 @@ namespace _372_odev2
 
         }
 
-        static void deleteSubmissionPermanently(int submissionid){
+        void deleteSubmissionPermanently(int submissionid){
              MongoClient dbClient = new MongoClient(
                 
                 "mongodb+srv://admin:1234@bil372cluster.aut1j.mongodb.net/makaledatabase?retryWrites=true&w=majority"
             
             );
             IMongoDatabase db = dbClient.GetDatabase("makaledatabase");
+
             var collection = db.GetCollection<BsonDocument>("submissions");
-    
-            
-            var Deleteone = collection.DeleteOneAsync(
-                            Builders<BsonDocument>.Filter.Eq("submission id", submissionid));
+            var deleteFilter = Builders<BsonDocument>.Filter.Eq("submission id", submissionid);
+
+            collection.DeleteOne(deleteFilter);
+            Console.WriteLine("Submission deleted");
+
         }
 
-        static void listCollections(){
+        void listCollections(){
 
              MongoClient dbClient = new MongoClient(
                 
@@ -224,10 +230,12 @@ namespace _372_odev2
             
            // var list = collection.FindAll();
             Console.WriteLine(collection);
+            Console.WriteLine("Listed Collections");
+
             
         }
 
-        static BsonDocument viewSubmission(int submissionid){
+        BsonDocument viewSubmission(int submissionid){
 
             MongoClient dbClient = new MongoClient(
                 
